@@ -42,19 +42,19 @@
                     <div class="login">
 
                         <h1>Login</h1>
-                        
+
                         <!-- Loging form -->
                         <form action="login" method="post">
-                            <c:if test="${msg!=null}">
-                               <div class="alert alert-danger" role="alert" >
-                                   ${requestScope.msg}
-                              </div>
+                            <c:if test="${sessionScope.msg!=null}">
+                                <div class="alert alert-danger" role="alert" >
+                                    ${sessionScope.msg}
+                                </div>
                             </c:if>
                             <div class="form-group">
                                 <input type="text" name="user" class="form-control" id="exampleInputEmail1 " aria-describedby="emailHelp" placeholder="Enter user name">
 
                             </div>
-                            
+
                             <div class="form-group">
                                 <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
                             </div>
@@ -70,11 +70,10 @@
                                 <label class="forgot-password"><a href="forgot">Forgot Password?<a></label>
 
                                             </div>
-
                                             <br>
                                             <button type="submit" class="btn btn-lg btn-block btn-success">Sign in</button><br>
                                             <div>
-                                                <label class="forgot-password"><a href="#">Sign in new account<a></label>
+                                                <label class="forgot-password"><a href="register">Sign in new account<a></label>
                                                             </div>
                                                             </form>
                                                             <!-- End Loging form -->

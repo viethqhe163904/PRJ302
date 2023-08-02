@@ -5,6 +5,7 @@
 
 package controller;
 
+import dal.FeedbackDAO;
 import dal.ProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,9 +14,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import model.Feedback;
 import model.Product;
+import model.User;
 
 /**
  *
@@ -60,14 +64,17 @@ public class ProductServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         String id_raw = request.getParameter("pid");
-       
-            int id = Integer.parseInt(id_raw);
+        int id = Integer.parseInt(id_raw);
         ProductDAO p = new ProductDAO();
+        FeedbackDAO fd = new FeedbackDAO();
         Product detail_product = p.getProductById(id);
-        List<Product> list_related =p.getRelatedByProductId(id);
+         List<Feedback> listf = fd.getFeedbackById(id);
+        List<Product> list_related =p.getRelatedByProductId(id);// theo brand
         request.setAttribute("list_related", list_related);
+         request.setAttribute("listf", listf);
+         request.setAttribute("total", listf.size());
         request.setAttribute("detail_product", detail_product);
-         request.getRequestDispatcher("product.jsp").forward(request, response);
+        request.getRequestDispatcher("product.jsp").forward(request, response);
     } 
    
 
@@ -81,7 +88,25 @@ public class ProductServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        HttpSession session = request.getSession();
+        String review = request.getParameter("review");
+        String rating_raw = request.getParameter("rating");
+        String id_raw = request.getParameter("id");
+        User account = (User) session.getAttribute("user");
+        FeedbackDAO fd = new FeedbackDAO();
+        int rating, id;
+        if (session.getAttribute("user") != null) {
+            try {
+                rating = Integer.parseInt(rating_raw);
+                id = Integer.parseInt(id_raw);
+                fd.insertFeedback(account, review, rating, id);
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+            response.sendRedirect("product?pid=" + id_raw);
+        } else {
+            response.sendRedirect("login");
+        }
     }
 
     /** 

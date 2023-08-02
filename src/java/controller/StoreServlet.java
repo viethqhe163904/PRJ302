@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dal.BrandDAO;
 import dal.CategoryDAO;
 import dal.ProductDAO;
 import java.io.IOException;
@@ -14,6 +15,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.List;
+import model.Brand;
+import model.Category;
 import model.Product;
 
 /**
@@ -35,18 +39,21 @@ public class StoreServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet StoreServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet StoreServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+//        String id_raw = request.getParameter("id");
+//        ProductDAO p = new ProductDAO();
+//        ArrayList<Product> list_p = new ArrayList<>();
+//        ArrayList<Product> list_ps;
+//        ArrayList<Product> list_p3;
+//        int id = Integer.parseInt(id_raw);
+//        list_p = p.getAllProductsByCId(id);//hien thi san pham theo category
+//       
+//        list_ps = p.getAllProducts();//hienj thi all san pham
+//        list_p3 = p.getTop3SaleProducts();//hien thi top 3 sale
+//        request.setAttribute("list_p", list_p);
+//        request.setAttribute("ids", id);
+//        request.setAttribute("list_ps", list_ps);
+//        request.setAttribute("list_p3", list_p3);
+//        request.getRequestDispatcher("store.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -61,23 +68,35 @@ public class StoreServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String id_raw = request.getParameter("id");
-        int id;
-        ProductDAO p = new ProductDAO();
-        ArrayList<Product> list_p;
-        ArrayList<Product> list_ps;
-        ArrayList<Product> list_p3;
-       
-        id = Integer.parseInt(id_raw);
-        list_p = p.getAllProductsById(id);
-        list_ps = p.getAllProducts();
-        list_p3 = p.getTop3SaleProducts();
-       
-        request.setAttribute("list_p", list_p);
-        request.setAttribute("ids", id);
-        request.setAttribute("list_ps", list_ps);
-        request.setAttribute("list_p3", list_p3);
+        String page_raw = request.getParameter("page");
+        ProductDAO pd = new ProductDAO();
+        BrandDAO bd = new BrandDAO();
+        List<Brand> list_b = bd.getAllBrands();
+        List<Product> list_p3 = pd.getTop3SaleProducts();
+        String[] pp = {"500 - 1000", "1000 - 1500", "1500 - 2000", "2000 - 2500", "Up to 3000"};
+        boolean[] pb = new boolean[pp.length + 1];
+        pb[0] = true;
+        boolean[] brands = new boolean[list_b.size() + 1];
+        brands[0] = true;
+        if (page_raw == null) {
+            page_raw = "1";
 
+        }
+        int id_page = Integer.parseInt(page_raw);
+        ArrayList<Product> list_p = pd.getProductsPaging(id_page); //hienj thi all san pham theo paging
+        request.setAttribute("list_p", list_p);
+        int page = pd.numberOfProduct();
+        int end_page = page / 6;
+        if (page % 6 != 0) {
+            end_page++;
+        }
+        request.setAttribute("list_p3", list_p3);
+        request.setAttribute("end_page", end_page);
+         request.setAttribute("list_b", list_b);
+        request.setAttribute("pp", pp);
+        request.setAttribute("pb", pb);
+         request.setAttribute("brands", brands);
+          request.setAttribute("cid", 0);
         request.getRequestDispatcher("store.jsp").forward(request, response);
     }
 

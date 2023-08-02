@@ -10,12 +10,53 @@
 <html lang="en">
 
     <head>
+        <script type="text/javascript">
+
+            function setCheck(obj) {
+                var fries = document.getElementsByName('cidd');
+                if ((obj.id == 'b0') && (fries[0].checked == true))
+                {
+                    for (var i = 1; i < fries.length; i++)
+                        fries[i].checked = false;
+                } else {
+                    for (var i = 1; i < fries.length; i++) {
+                        if (fries[i].checked == true) {
+                            fries[0].checked = false;
+                            break;
+                        }
+                    }
+                }
+                document.getElementById('f2').submit();
+            }
+            function setCheck1(obj) {
+                var fries = document.getElementsByName('price');
+                if ((obj.id == 'price-0') && (fries[0].checked == true))
+                {
+                    for (var i = 1; i < fries.length; i++)
+                        fries[i].checked = false;
+                } else {
+                    for (var i = 1; i < fries.length; i++) {
+                        if (fries[i].checked == true) {
+                            fries[0].checked = false;
+                            break;
+                        }
+                    }
+                }
+                document.getElementById('f1').submit();
+            }
+            function f3(obj) {
+                 var fries = document.getElementsByName('sort');
+                document.getElementById('f3').submit();
+            }
+
+
+        </script>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-        <title>Electro - HTML Ecommerce Template</title>
+        <title>Shop</title>
 
         <!-- Google font -->
         <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
@@ -47,6 +88,7 @@
     </head>
     <body>
         <jsp:include page="header.jsp"/>
+
         <!-- BREADCRUMB -->
         <div id="breadcrumb" class="section">
             <!-- container -->
@@ -57,8 +99,7 @@
                         <ul class="breadcrumb-tree">
                             <li><a href="#">Home</a></li>
                             <li><a href="#">All Categories</a></li>
-                            <li><a href="#">Accessories</a></li>
-                            <li class="active">Headphones (227,490 Results)</li>
+                            <li class="active">Laptop</li>
                         </ul>
                     </div>
                 </div>
@@ -77,71 +118,36 @@
                     <!-- ASIDE -->
                     <div id="aside" class="col-md-3">
                         <!-- aside Widget -->
-                        <div class="aside">
+
+
+                        <div class="aside"> 
                             <h3 class="aside-title">Price</h3>
                             <div class="checkbox-filter">
-                                <a href="store" class="cta-btn">500 - 1000 $<i class="fa fa-arrow-circle-right"></i></a> <br>
-                                <br>
-                                    <a href="store" class="cta-btn">1000 - 1500 $<i class="fa fa-arrow-circle-right"></i></a> <br>
-                                <br>
-                                    <a href="store" class="cta-btn">1500 - 2000 $<i class="fa fa-arrow-circle-right"></i></a> <br>
-                                    <br>
-                                   <a href="store" class="cta-btn">2000 - 2500 $<i class="fa fa-arrow-circle-right"></i></a> <br>
-                                <br>
-                                   <a href="store" class="cta-btn">Upper 3000 $<i class="fa fa-arrow-circle-right"></i></a> <br>
-                                <br>
+                                <c:set var="pp" value="${requestScope.pp}"/>
+                                <c:set var="pb" value="${requestScope.pb}"/>
+                                <form id="f1" action="store1" method="get">
+                                    <div class="input-checkbox">
+                                        <input type="checkbox" id="g0" name="price" ${pb[0]?"checked":""}  value="${0}" onclick="setCheck1(this)"/>
+                                        <label for="g0">
+                                            <span></span>
+                                            All
+                                        </label>
+                                    </div>
+                                    <c:forEach begin="0" end="${4}"  var="i">
+                                        <div class="input-checkbox">
+                                            <input type="checkbox" id="price-${i}" name="price" ${pb[i+1]?"checked":""} value="${(i+1)}" onclick="setCheck1(this)"/>
+                                            <label for="price-${i}">
+                                                <span></span>
+                                                ${pp[i]}
+                                            </label>
+                                        </div>
+                                    </c:forEach>
+                                </form>
                             </div>
                         </div>
+
                         <!-- /aside Widget -->
                         <!-- aside Widget -->
-                        <div class="aside">
-                            <h3 class="aside-title">Brand</h3>
-                            <div class="checkbox-filter">
-                                <div class="input-checkbox">
-                                    <input type="checkbox" id="brand-1" name="brand">
-                                    <label for="brand-1">
-                                        <span></span>
-                                        SAMSUNG
-                                        <small>(578)</small>
-                                    </label>
-                                </div>
-                                <div class="input-checkbox">
-                                    <input type="checkbox" id="brand-2">
-                                    <label for="brand-2">
-                                        <span></span>
-                                        LG
-                                        <small>(125)</small>
-                                    </label>
-                                </div>
-                                <div class="input-checkbox">
-                                    <input type="checkbox" id="brand-3">
-                                    <label for="brand-3">
-                                        <span></span>
-                                        SONY
-                                        <small>(755)</small>
-                                    </label>
-                                </div>
-                                <div class="input-checkbox">
-                                    <input type="checkbox" id="brand-4">
-                                    <label for="brand-4">
-                                        <span></span>
-                                        SAMSUNG
-                                        <small>(578)</small>
-                                    </label>
-                                </div>
-                                <div class="input-checkbox">
-                                    <input type="checkbox" id="brand-5">
-                                    <label for="brand-5">
-                                        <span></span>
-                                        LG
-                                        <small>(125)</small>
-                                    </label>
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <!-- /aside Widget -->
 
                         <!-- aside Widget -->
                         <div class="aside">
@@ -169,21 +175,15 @@
                         <!-- store top filter -->
                         <div class="store-filter clearfix">
                             <div class="store-sort">
-                                <label>
-                                    Sort By:
-                                    <select class="input-select">
-                                        <option value="0">Popular</option>
-                                        <option value="1">Position</option>
-                                    </select>
-                                </label>
-
-                                <label>
-                                    Show:
-                                    <select class="input-select">
-                                        <option value="0">20</option>
-                                        <option value="1">50</option>
-                                    </select>
-                                </label>
+                                <form  name="f3" action="store1" method="post">
+                                    <label>
+                                        Sort By:
+                                        <select class="input-select" name="sort">
+                                            <option value="0" onclick="f3(this)">Price</option>
+                                            <option value="1" onclick="f3(this)" >Discount</option>
+                                        </select>
+                                    </label>
+                                </form>
                             </div>
                             <ul class="store-grid">
                                 <li class="active"><i class="fa fa-th"></i></li>
@@ -196,7 +196,7 @@
 
                         <div class="row">
                             <!-- product -->
-                            <c:forEach items="${requestScope.list_p}" var="p">
+                            <c:forEach items="${requestScope.list_p}" var="p"><!-- /product  hien ra tât ca san pham theo category va search-->
                                 <div class="col-md-4 col-xs-6">
                                     <div class="product">
                                         <div class="product-img">
@@ -224,99 +224,24 @@
                                                 <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
                                             </div>
                                         </div>
+
+
                                         <div class="add-to-cart">
-                                            <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+                                            <a href="buy?id=${p.id}&check=2&cid=${p.category.id}">   <button type="submit"  class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button></a>
                                         </div>
                                     </div>
                                 </div>
                                 <!-- /product -->
                             </c:forEach>
-                            <c:if test="${requestScope.ids==6}">  <!-- /product  hien ra tât ca san pham-->
-                                <c:forEach items="${requestScope.list_ps}" var="p1">
-                                    <div class="col-md-4 col-xs-6">
-                                        <div class="product">
-                                            <div class="product-img">
-                                                <img src="${p1.image}" width="250" height="250" alt="">
-
-                                            </div>
-                                            <div class="product-body">
-                                                <p class="product-category">${p1.brand.name}</p>
-                                                <h3 class="product-name"><a href="product?pid=${p1.id}">${p1.title}</a></h3>
-                                                    <c:if test="${p1.discount != 0}">
-                                                    <h4 class="product-price">${p1.price-(p1.price * (p1.discount/100))} $ <del class="product-old-price">${p1.price}</del></h4>
-                                                    </c:if>
-                                                    <c:if test="${p1.discount == 0}">
-                                                    <h4 class="product-price">${p1.price} $ </h4>
-                                                </c:if>
-                                                <div class="product-rating">
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                </div>
-                                                <div class="product-btns">
-
-                                                    <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
-                                                </div>
-                                            </div>
-                                            <div class="add-to-cart">
-                                                <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- /product -->
-                                </c:forEach>
-                            </c:if>
-                            <c:forEach items="${requestScope.list_search}" var="p2"> <!-- /product hienm thi cac product theo search -->
-                                <div class="col-md-4 col-xs-6">
-                                    <div class="product">
-                                        <div class="product-img">
-                                            <img src="${p2.image}" width="250" height="250" alt="">
-
-                                        </div>
-                                        <div class="product-body">
-                                            <p class="product-category"</p>
-                                            <h3 class="product-name"><a href="product?pid=${p2.id}">${p2.title}</a></h3>
-                                                <c:if test="${p2.discount != 0}">
-                                                <h4 class="product-price">${p2.price-(p2.price * (p2.discount/100))} $ <del class="product-old-price">${p2.price}</del></h4>
-                                                </c:if>
-                                                <c:if test="${p2.discount == 0}">
-                                                <h4 class="product-price">${p2.price} $ </h4>
-                                            </c:if>
-                                            <div class="product-rating">
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                            </div>
-                                            <div class="product-btns">
-
-                                                <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
-                                            </div>
-                                        </div>
-                                        <div class="add-to-cart">
-                                            <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /product -->
-                            </c:forEach>
-                                
-                                
-                               
-                                              
                             <div class="clearfix visible-sm visible-xs"></div>
                             <div class="clearfix visible-lg visible-md"></div>
                             <!-- store bottom filter -->
                             <div class="store-filter clearfix">
-                                <span class="store-qty">Showing 20-100 products</span>
+                                <span class="store-qty">Showing products</span>
                                 <ul class="store-pagination">
-                                    <li class="active">1</li>
-                                    <li><a href="#">2</a></li>
-                                    <li><a href="#">3</a></li>
-                                    <li><a href="#">4</a></li>
+                                    <c:forEach begin="1" end="${requestScope.end_page}" var="i">
+                                        <li><a href="store?page=${i}"> ${i}</a></li>
+                                        </c:forEach> 
                                     <li><a href="#"><i class="fa fa-angle-right"></i></a></li>
                                 </ul>
                             </div>
@@ -329,8 +254,6 @@
                 <!-- /container -->
             </div>
             <!-- /SECTION -->
-
-
             <jsp:include page="footer.jsp"/>
             <!-- jQuery Plugins -->
             <script src="js/jquery.min.js"></script>

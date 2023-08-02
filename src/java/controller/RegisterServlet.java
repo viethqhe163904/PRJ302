@@ -12,6 +12,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.User;
 
 /**
  *
@@ -78,6 +79,7 @@ public class RegisterServlet extends HttpServlet {
         String phone = request.getParameter("phone");
         String a = request.getParameter("adress");
         String c_p = request.getParameter("confirmpassword");
+        
         char[] ch = phone.toCharArray();
         UserDAO user = new UserDAO();
         String msg = null;
@@ -108,6 +110,8 @@ public class RegisterServlet extends HttpServlet {
                     request.getRequestDispatcher("register.jsp").forward(request, response);
                 }
             }
+           
+            user.insertUser(u,p,m,phone,a,2);
             response.sendRedirect("login");
         }
     }

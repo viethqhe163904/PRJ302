@@ -71,4 +71,15 @@ public class BrandDAO extends DBContext{
         
         return b;
     }
+        public void insertBrand(Brand c) {
+        String sql = "insert into Brand values(?,?)";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, c.getId());
+            st.setString(2, c.getName());
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
 }

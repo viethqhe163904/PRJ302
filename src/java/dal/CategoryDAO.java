@@ -36,13 +36,12 @@ public class CategoryDAO extends DBContext{
         String sql =" select * from Category where id=?";
         try{
             PreparedStatement st = connection.prepareStatement(sql);
-            ResultSet rs = st.executeQuery();
             st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            
             if(rs.next()){
-                
                 Category c= new Category(rs.getInt("id"),rs.getString("name"),rs.getString("image"));
                  return c;
-                
             }
            
             }catch(SQLException e){
@@ -50,5 +49,37 @@ public class CategoryDAO extends DBContext{
                     }
         
         return null;
+    }
+     public void insertCategory(Category c) {
+        String sql = "insert into Category values(?,?,?)";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, c.getId());
+            st.setString(2, c.getName());
+            st.setString(3, c.getImage());
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+      public void updateCategory(Category c) {
+        String sql = "UPDATE [dbo].[Category]\n"
+                + "   SET [name] = ?\n"
+                + "      ,[image] = ?\n"
+                + " WHERE id = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, c.getName());
+            st.setString(2, c.getImage());
+            st.setInt(3, c.getId());
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+     public static void main(String[] args) {
+        CategoryDAO c = new CategoryDAO();
+                System.out.println(c.getCategoryById(1).getName());
+                        
     }
 }

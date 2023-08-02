@@ -65,7 +65,7 @@
                 </div>
             </div>
             <!-- /TOP HEADER -->
-            
+
 
             <!-- MAIN HEADER -->
             <div id="header">
@@ -86,120 +86,127 @@
                         <!-- SEARCH BAR -->
                         <div class="col-md-6">
                             <div class="header-search">
-                                <form action="search" method="post">
-                                    <select name="id" class="input-select">
+                                <form action="store1" method="get">
+                                    <select name="bid" class="input-select">
                                         <c:forEach items="${requestScope.list_bSearch}" var="b">
                                             <option <c:if test="${bid==b.id}">selected</c:if> value="${b.id}"  >${b.name}</option>
                                         </c:forEach>
                                     </select>
-                                            
+
                                     <input name="search" class="input" placeholder="Search here">
                                     <button class="search-btn">Search</button>
                                 </form>
                             </div>
                         </div>
                         <!-- /SEARCH BAR -->
-<!-- ACCOUNT -->
+                        <!-- ACCOUNT -->
                         <div class="col-md-3 clearfix">
                             <div class="header-ctn">
                                 <!-- My Account -->
                                 <div class="dropdown">
                                     <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                                         <i class="fa fa-user-o"></i>
-                                        <span>My Account</span>
+                                        <c:if test="${sessionScope.user !=null}">
+                                            <span>${sessionScope.user.getUsername()}</span>
+                                        </c:if>
+                                        <c:if test="${sessionScope.user ==null}">
+                                            <span>My Account</span>
+                                        </c:if>
                                     </a>
                                     <!-- <a href="#" class="text-uppercase">Login</a> / <a href="#" class="text-uppercase">Join</a> -->
                                     <div style="width: 195px" class="cart-dropdown">
                                         <ul class="custom-menu">
-                                           
-                                                <li><a href="imageuser">
-                                                        <div class="icon"><i class="fa fa-user"></i> </div>
+                                            <c:if test="${sessionScope.user !=null}">
+                                                <li><a href="edit_user.jsp">
+                                                        <div class="icon"><i class="fa fa-user"></i> </div> Change profile
                                                     </a></li>
-                                                
-                                               
+                                                </c:if>
+                                                <c:if test="${sessionScope.user ==null}">
                                                 <li><a href="login">
-                                                        <div class="icon"><i class="fa fa-user"></i> </div> Hello Customer !!!
+                                                        <div class="icon"><i class="fa fa-user"></i> </div> Hello Customer
                                                     </a></li>
-                                                
-                                            <li><a href="crud">
-                                                    <div class="icon"><i class="fa fa-tachometer"></i> </div> Manage Product
-                                                </a></li>
-                                            <li><a href="managecategory">
-                                                    <div class="icon"><i class="fa fa-tachometer"></i> </div> Manage Category
-                                                </a></li>
-                                            <li><a href="login">
-                                                    <div class="icon"><i class="fa fa-unlock-alt"></i> </div> Login
-                                                </a></li>
-                                            <li><a href="signup">
+                                                </c:if>
+                                                <c:if test="${sessionScope.user !=null}">
+                                                <li><a href="login">
+                                                        <div class="icon"><i class="fa fa-user"></i> </div> Hello ${sessionScope.user.getUsername()}
+                                                    </a></li>
+                                                </c:if>
+                                                <c:if test="${sessionScope.user.getRole_id()==1}">
+                                                <li><a href="crud">
+                                                        <div class="icon"><i class="fa fa-tachometer"></i> </div> Manage Product
+                                                    </a></li>
+                                                <li><a href="crud_category">
+                                                        <div class="icon"><i class="fa fa-tachometer"></i> </div> Manage Category
+                                                    </a></li>
+                                                     <li><a href="crud_brand">
+                                                        <div class="icon"><i class="fa fa-tachometer"></i> </div> Manage Brand
+                                                    </a></li>
+                                                </c:if> 
+                                                <c:if test="${sessionScope.user ==null}">
+                                                <li><a href="login">
+                                                        <div class="icon"><i class="fa fa-unlock-alt"></i> </div> Login
+                                                    </a></li>
+                                                </c:if>
+
+                                            <li><a href="register">
                                                     <div class="icon"><i class="fa fa-user-plus"></i> </div> Create An
                                                     Account
                                                 </a></li>
-                                            <li><a href="logout">
-                                                    <div class="icon"><i class="fa fa-sign-out"></i> </div> Log out
-                                                </a></li>
+                                                <c:if test="${sessionScope.user !=null}">
+                                                <li><a href="logout">
+                                                        <div class="icon"><i class="fa fa-sign-out"></i> </div> Log out
+                                                    </a></li>
+                                                </c:if>
                                         </ul>
                                     </div>
                                 </div>
                                 <!-- My Account -->
-<!--                         ACCOUNT 
-                        <div class="col-md-3 clearfix">
-                            <div class="header-ctn">
-                                <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true" >
-                                    <a href="login.jsp"><i class="fa fa-user-circle" ></i>
-                                        <span>My Account</span>
-                                    </a>-->
 
-                                    <!-- Cart -->
+
+                                <!-- Cart -->
+
+                                <c:if test="${sessionScope.user != null}">
                                     <div class="dropdown">
                                         <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                                             <i class="fa fa-shopping-cart"></i>
                                             <span>Your Cart</span>
-                                            <div class="qty">3</div>
+                                            <div class="qty">${sessionScope.cart.getSize()}</div>
                                         </a>
                                         <div class="cart-dropdown">
                                             <div class="cart-list">
-                                                <div class="product-widget">
-                                                    <div class="product-img">
-                                                        <img src="./img/product01.png" alt="">
+                                                <c:set var="o" value="${sessionScope.cart}"/>
+                                                <c:forEach items="${o.getItems()}" var="i">
+                                                    <div class="product-widget">
+                                                        <div class="product-img">
+                                                            <img src="${i.product.image}" alt="">
+                                                        </div>
+                                                        <div class="product-body">
+                                                            <h3 class="product-name"><a href="#">${i.product.title}</a></h3>
+                                                            <h4 class="product-price"><span class="qty">${i.quantity}x</span>${i.quantity * i.price}0$</h4>
+                                                        </div>
+                                                        <button class="delete"><a href="deletecart?rid=${i.product.id}" > <i class="fa fa-close"> </i></a> </button>
                                                     </div>
-                                                    <div class="product-body">
-                                                        <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                                                        <h4 class="product-price"><span class="qty">1x</span>$980.00</h4>
-                                                    </div>
-                                                    <button class="delete"><i class="fa fa-close"></i></button>
-                                                </div>
-
-                                                <div class="product-widget">
-                                                    <div class="product-img">
-                                                        <img src="./img/product02.png" alt="">
-                                                    </div>
-                                                    <div class="product-body">
-                                                        <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                                                        <h4 class="product-price"><span class="qty">3x</span>$980.00</h4>
-                                                    </div>
-                                                    <button class="delete"><i class="fa fa-close"></i></button>
-                                                </div>
+                                                </c:forEach>
                                             </div>
                                             <div class="cart-summary">
-                                                <small>3 Item(s) selected</small>
-                                                <h5>SUBTOTAL: $2940.00</h5>
+                                                <h5>SUBTOTAL: ${sessionScope.cart.getTotalMoney()}0$</h5>
                                             </div>
                                             <div class="cart-btns">
-                                                <a href="#">View Cart</a>
-                                                <a href="#">Checkout  <i class="fa fa-arrow-circle-right"></i></a>
+                                                <a href="cart">View Cart</a>
+                                                <a href="checkout">Checkout  <i class="fa fa-arrow-circle-right"></i></a>
                                             </div>
                                         </div>
                                     </div>
                                     <!-- /Cart -->
-
-                                    <!-- Menu Toogle -->
-                                    <div class="menu-toggle">
-                                        <a href="#">
-                                            <i class="fa fa-bars"></i>
-                                            <span>Menu</span>
-                                        </a>
-                                    </div>
-                                    <!-- /Menu Toogle -->
+                                </c:if>
+                                <!-- Menu Toogle -->
+                                <div class="menu-toggle">
+                                    <a href="#">
+                                        <i class="fa fa-bars"></i>
+                                        <span>Menu</span>
+                                    </a>
+                                </div>
+                                <!-- /Menu Toogle -->
                             </div>
                         </div>
                         <!-- /ACCOUNT -->
@@ -209,9 +216,9 @@
                 <!-- container -->
             </div>
             <!-- /MAIN HEADER -->
-             <!-- NAVIGATION -->
-        
-        <!-- /NAVIGATION -->
+            <!-- NAVIGATION -->
+
+            <!-- /NAVIGATION -->
         </header>
         <!-- /HEADER -->
         <nav id="navigation">
@@ -222,10 +229,12 @@
                     <!-- NAV -->
                     <ul class="main-nav nav navbar-nav">
                         <li class="active"><a href="home">Home</a></li>
-                        <li><a href="store?id=${6}">Store</a></li>
-                        <li><a href="#">Card</a></li>
-                        <li><a href="#">Check out</a></li>
-                        <li><a href="#">statistics</a></li>
+                        <li><a href="store">Shop</a></li>
+                        <li><a href="cart">Card</a></li>
+                        <li><a href="checkout">Check out</a></li>
+                            <c:if test="${sessionScope.user.getRole_id() ==1}">
+                            <li><a href="statistics">statistics</a></li>
+                            </c:if>
                     </ul>
                     <!-- /NAV -->
                 </div>
@@ -233,7 +242,7 @@
             </div>
             <!-- /container -->
         </nav>
-        
+
         <script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <script src="js/slick.min.js"></script>

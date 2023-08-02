@@ -11,7 +11,6 @@ package model;
 public class Product {
 
     private int id;
-    private int category_id;
     private Category category;
     private Brand brand;
     private String title;
@@ -20,15 +19,13 @@ public class Product {
     private int discount;
     private String description;
     private int status;
-    private int brand_id;
     private String image;
 
     public Product() {
     }
 
-    public Product(int id, int category_id, Brand brand, Category category, String title, double price, int quantity, int discount, String description, int status, int brand_id, String image) {
+    public Product(int id, Category category, Brand brand, String title, double price, int quantity, int discount, String description, int status, String image) {
         this.id = id;
-        this.category_id = category_id;
         this.category = category;
         this.brand = brand;
         this.title = title;
@@ -37,16 +34,7 @@ public class Product {
         this.discount = discount;
         this.description = description;
         this.status = status;
-        this.brand_id = brand_id;
         this.image = image;
-    }
-
-    public int getCategory_id() {
-        return category_id;
-    }
-
-    public void setCategory_id(int category_id) {
-        this.category_id = category_id;
     }
 
     public Category getCategory() {
@@ -57,8 +45,6 @@ public class Product {
         this.category = category;
     }
 
-   
-    
     public String getTitle() {
         return title;
     }
@@ -105,14 +91,6 @@ public class Product {
 
     public void setStatus(int status) {
         this.status = status;
-    }
-
-    public int getBrand_id() {
-        return brand_id;
-    }
-
-    public void setBrand_id(int brand_id) {
-        this.brand_id = brand_id;
     }
 
     public int getId() {
